@@ -1,0 +1,54 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body,html{
+    height: 100%;
+}
+
+header{
+    width: 100%;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+
+}
+.icon{
+    background-image: url(./assets/menu-button_icon-icons.com_72989.png);
+    height: 24px;
+    width: 24px;
+    background-size: cover;
+    cursor: pointer;
+
+
+}
+
+.Closed{
+    display: none;
+}
+
+.Menu-Open{
+    width: 20%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(112, 112, 112);
+    font-size: 24px;
+    color: white;
+
+}
+.Menu-Open .button{
+    width: 100%;
+    border: 1px solid black;
+
+}
+.Menu-Open .button:hover{
+    background-color: white;
+    transition: 1000ms;
+}
+
