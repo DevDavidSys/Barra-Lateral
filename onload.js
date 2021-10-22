@@ -12,7 +12,9 @@ let game ={
 function onload(){
     
     window.document.getElementById('op0').addEventListener('click',newGame);
-    
+    window.document.getElementById('op1').addEventListener('click',open_configuration);
+    window.document.getElementById('op2').addEventListener('click',open_about);
+
 }
 
 async function newGame(){
@@ -24,10 +26,40 @@ async function newGame(){
             
 }
 
+function open_configuration(){
+    let background = document.getElementById('background_configuration');
+    background.style.display = "flex";
+    let totalballs = document.getElementById('config_totalballs')
+    totalballs.value = game.totalBalls;
+    let speed = document.getElementById('config_speed');
+    speed.value  = game.speed;
+    document.getElementById('close_configuration').addEventListener('click',()=>{
+        
+        background.style.display = 'none';
+    });
+    
+    document.getElementById('confirm_configuration').addEventListener('click',()=>{
+        game.totalBalls = totalballs.value;
+        game.speed = speed.value;
+        background.style.display = 'none';
+
+        console.log(`totalballs:${game.totalBalls},speed:${game.speed}`);
+    });
+}
+function open_about(){
+    let background = document.getElementById('background_about');
+    background.style.display = "flex";
+    document.getElementById('close_about').addEventListener('click',()=>{
+        background.style.display = 'none';
+    });
+    
+}   
+
+/*
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
-
+*/
 
 function createCircle(){
     let Height = getRandomIntInclusive(0,478);
