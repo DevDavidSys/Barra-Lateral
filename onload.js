@@ -1,12 +1,15 @@
 window.onload(onload());
 let game ={
     display: document.getElementById('game'),
-    currentBalls: 0,
-    totalBalls:5,
-    points:0,
+    ElementCard1: null,
+    ElementCard2:null,
+    indexCard1: null,
+    indexCard2: null,
+    currentMatches: 0,
+    totalMatches:10,
     time:0,
-    speed:5000,
     state:false
+
 }
 
 function onload(){
@@ -17,34 +20,10 @@ function onload(){
 
 }
 
-async function newGame(){
-    game.state = true;
-    game.points = 0;
 
-    createCircle();
-        
-            
-}
 
 function open_configuration(){
-    let background = document.getElementById('background_configuration');
-    background.style.display = "flex";
-    let totalballs = document.getElementById('config_totalballs')
-    totalballs.value = game.totalBalls;
-    let speed = document.getElementById('config_speed');
-    speed.value  = game.speed;
-    document.getElementById('close_configuration').addEventListener('click',()=>{
-        
-        background.style.display = 'none';
-    });
     
-    document.getElementById('confirm_configuration').addEventListener('click',()=>{
-        game.totalBalls = totalballs.value;
-        game.speed = speed.value;
-        background.style.display = 'none';
-
-        console.log(`totalballs:${game.totalBalls},speed:${game.speed}`);
-    });
 }
 function open_about(){
     let background = document.getElementById('background_about');
@@ -60,38 +39,98 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 */
-
-function createCircle(){
-    let Height = getRandomIntInclusive(0,478);
-    let Width = getRandomIntInclusive(0,478);
-    game.display.innerHTML=`<div class="circle" style="position: relative; top:${Height}px; left:${Width}px"></div>`;
-    document.getElementsByClassName('circle')[0].addEventListener('click',addPoint);
-
+async function newGame(){
+    game.state = true;
+    game.currentMatches = 0;
+    let cheap = createCheap();
+    game.display.innerHTML = '';
+    let html = '';
+    cheap.forEach(card=>{
+        html += `<div class="card" index=${card.index}> ${card.index}</div>`
+    });
+    
+    game.display.style.display = 'grid';
+    game.display.innerHTML = html;
+    
+    document.querySelectorAll('.card').forEach(card=>{
+        card.addEventListener('click',showCard);
+    });
+    
 }
-
-function addPoint(){
-    game.points++;
-    game.currentBalls++;
-    console.log(game.points);
-    game.display.innerHTML="";
-    if(game.points != game.totalBalls){
-        createCircle();
+function showCard() {
+    let index = parseInt(this.getAttribute("index")); 
+    console.log(this)
+    if(game.indexCard1 == null){
+        game.ElementCard1 = this;
+        game.indexCard1 = index;
+        this.removeEventListener('click',showCard,false);
     }
     else{
-        endGame();
+        game.ElementCard2 = this;
+        game.indexCard2 = index;
+        removeEventListener('click',showCard,false);
+        if(game.indexCard1 == game.indexCard2){
+            addPoint();
+        }
+        else{
+            game.ElementCard1.addEventListener('click',showCard);
+            game.ElementCard2.addEventListener('click',showCard);
+            game.indexCard1 = null;
+            game.indexCard2 = null;
+
+
+            
+            game.ElementCard1 = null;
+            game.ElementCard2 = null;
+        }
     }
 }
 
-function endGame(){
-    game.display.innerHTML ='<h1>Fim de jogo</h1>'
-    game.state = false;
-
+function addPoint(params) {
+    
 }
+function createCheap() {
 
-function getRandomIntInclusive(min, max) {
+
+    /*criar par*/
+    //colocar no objeto
+    //embaralhar o objeto
+    let cheap = [];
+
+    for(let a = 0;a < 10;a++){
+        let card1 = {
+            index: a,
+        }
+        
+        cheap.push(card1);
+        cheap.push(card1);
+    
+    }
+    console.log(cheap.length);
+    cheap = shuffle_array(cheap);
+    return cheap;
+
+    
+}
+function shuffle_array(array){
+    let size = array.length;
+    let old = array;
+    let n = [];
+    for (let i = 0;i < size;i++){
+        let index = getRandomIntInclusive(0,old.length-1);
+        var card = old[index];
+        
+        old.splice(index,1);
+        n.push(card);
+    }
+    return n;
+}
+    
+    
+function getRandomIntInclusive(min,max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
+
 }
-
-
+createCheap();
